@@ -15,7 +15,8 @@ export default class InMemoryAccountRepository implements AccountRepository {
         return new Promise((resolve) => resolve(account))
     }
 
-    async nextId(): Promise<number> {
-        return this.__items.length + 1;
+    delete(id: number): Promise<void> {
+        this.__items = this.__items.filter(a => a.getId() != id);
+        return new Promise((resolve) => resolve());
     }
 }

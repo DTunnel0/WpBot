@@ -4,4 +4,6 @@ export default interface AccountRepository {
     create(account: Account): Promise<void>;
 
     getById(id: number): Promise<Account>;
+
+    delete(id: number): Promise<void>;
 }

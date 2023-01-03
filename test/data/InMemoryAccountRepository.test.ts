@@ -9,7 +9,7 @@ describe('deve testar o repositorio de contas', () => {
         date.setDate(date.getDate() + 10)
 
         const repo = new InMemoryAccountRepository();
-        const accountId = await repo.nextId();
+        const accountId = 1;
 
         const account = new Account(
             accountId,

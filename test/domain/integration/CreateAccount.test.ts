@@ -1,8 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import Logger from '../../../src/common/Logger';
+import Connection from '../../../src/data/database/Connection';
 
 import InMemorySystemAccountGateway from '../../../src/data/gateway/InMemorySystemAccountGateway';
-import InMemoryAccountRepository from '../../../src/data/repository/InMemoryAccountRepository';
+import SqliteAccountRepository from '../../../src/data/repository/SqliteAccountRepository';
 import CreateAccountUseCase from '../../../src/domain/usecases/CreateAccount';
 import GetAccountByIdUseCase from '../../../src/domain/usecases/GetAccountById';
 
@@ -22,7 +23,7 @@ class ConsoleLoggger implements Logger {
 
 describe('deve testar o caso de uso de criar conta', () => {
     test('deve criar uma conta', async () => {
-        const repo = new InMemoryAccountRepository();
+        const repo = new SqliteAccountRepository(Connection.getInstance());
         const gateway = new InMemorySystemAccountGateway();
         const useCase = new CreateAccountUseCase(repo, gateway, new ConsoleLoggger());
 
@@ -38,5 +39,7 @@ describe('deve testar o caso de uso de criar conta', () => {
 
         expect('teste').toBe(account.username);
         expect('1234').toBe(account.password);
+
+        await repo.delete(result);
     })
 })

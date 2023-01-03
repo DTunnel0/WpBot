@@ -22,7 +22,6 @@ class ExpirationDateError extends Error {
     }
 }
 
-
 class Username {
     private __max_length = 16;
     private __min_length = 3;
@@ -112,6 +111,16 @@ class Account {
 
     public getExpirationDate(): ExpirationDate {
         return this.expirationDate;
+    }
+
+    public static create(data: any): Account {
+        return new Account(
+            data.id,
+            new Username(data.username),
+            new Password(data.password),
+            new ConnectionLimit(data.connection_limit),
+            new ExpirationDate(new Date(data.expiration_date)),
+        );
     }
 }
 

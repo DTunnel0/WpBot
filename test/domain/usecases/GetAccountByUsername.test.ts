@@ -1,15 +1,30 @@
 import { describe, expect, test } from '@jest/globals';
+import Logger from '../../../src/common/Logger';
 
 import InMemorySystemAccountGateway from '../../../src/data/gateway/InMemorySystemAccountGateway';
 import InMemoryAccountRepository from '../../../src/data/repository/InMemoryAccountRepository';
 import CreateAccountUseCase from '../../../src/domain/usecases/CreateAccount';
 import GetAccountByUsername from '../../../src/domain/usecases/GetAccountByUsername';
 
+class ConsoleLoggger implements Logger {
+    info(message: string): void {
+        console.log(message);
+    }
+
+    error(message: string, error: Error): void {
+        console.log(message, error);
+    }
+
+    warn(message: string): void {
+        console.log(message);
+    }
+}
+
 describe('deve testar o caso de uso de busca pelo nome', () => {
     test('deve buscar uma conta pelo nome de usuario', async () => {
         const repo = new InMemoryAccountRepository();
         const gateway = new InMemorySystemAccountGateway();
-        const useCase = new CreateAccountUseCase(repo, gateway);
+        const useCase = new CreateAccountUseCase(repo, gateway, new ConsoleLoggger());
 
         await useCase.execute({
             'username': 'teste',

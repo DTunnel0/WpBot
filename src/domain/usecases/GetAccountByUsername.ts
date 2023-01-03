@@ -19,7 +19,6 @@ export default class GetAccountByUsername {
     }
 }
 
-
 export type GetAccountByUsernameOutputDTO = {
     username: string;
     password: string;
