@@ -23,4 +23,10 @@ export default class SystemAccountGateway implements AccountGateway {
         const id = await this.commandExecutor.execute(cmd);
         return Promise.resolve(parseInt(id));
     }
+
+    async delete(username: string): Promise<void> {
+        const cmd = `userdel --force ${username}`
+        await this.commandExecutor.execute(cmd)
+        return;
+    }
 }
