@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
-import LinuxCommandExecutor from '../../src/data/gateway/LinuxCommandExecutor';
-import SystemAccountGateway from '../../src/data/gateway/SystemAccountGateway';
+import LinuxCommandExecutor from '../../src/data/gateway/local/LinuxCommandExecutor';
+import SystemAccountGateway from '../../src/data/gateway/local/SystemAccountGateway';
 
 class LinuxCommandExecutorMock implements LinuxCommandExecutor {
     async execute(command: string): Promise<string> {
@@ -21,7 +21,7 @@ describe('deve testar o gateway de contas', () => {
         const result = await gateway.create({
             username: 'Teste',
             password: 'Teste',
-            expirationDate: new Date().toISOString(),
+            expirationDate: new Date().toISOString().split('T')[0],
         });
         expect(result).toBe(1)
     })
@@ -32,7 +32,7 @@ describe('deve testar o gateway de contas', () => {
         expect(gateway.create({
             username: 'Teste',
             password: 'Teste',
-            expirationDate: new Date().toISOString(),
+            expirationDate: new Date().toISOString().split('T')[0],
         })).rejects.toThrow()
     })
 })

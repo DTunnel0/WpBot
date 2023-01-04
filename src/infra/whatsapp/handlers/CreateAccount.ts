@@ -22,7 +22,7 @@ export default class CreateAccountHandler implements Handler<string> {
             const data = await this.getAccount.execute(username);
             return Promise.resolve(this.presenter.present(data));
         } catch (err: any) {
-            return Promise.resolve('Error: ' + err.message);
+            return Promise.resolve('[Erro]: ' + err.message);
         }
     }
 }

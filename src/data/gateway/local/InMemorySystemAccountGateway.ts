@@ -1,6 +1,6 @@
-import AccountAlreadyExistsError from "../../domain/errors/AccountAlreadyExistsError";
-import AccountNotFoundError from "../../domain/errors/AccountNotFoundError";
-import AccountGateway, { GatewayAccountInputDTO } from "../../domain/interfaces/AccountGateway";
+import AccountAlreadyExistsError from "../../../domain/errors/AccountAlreadyExistsError";
+import AccountNotFoundError from "../../../domain/errors/AccountNotFoundError";
+import AccountGateway, { GatewayAccountInputDTO } from "../../../domain/interfaces/AccountGateway";
 
 export default class InMemorySystemAccountGateway implements AccountGateway {
     private __accounts: GatewayAccountInputDTO[] = [];
@@ -23,5 +23,9 @@ export default class InMemorySystemAccountGateway implements AccountGateway {
     async delete(username: string): Promise<void> {
         await this.getIdByUsername(username);
         this.__accounts = this.__accounts.filter(a => a.username != username)
+    }
+
+    async exists(username: string): Promise<boolean> {
+        return Promise.resolve(!!this.__accounts.find(a => a.username == username))
     }
 }

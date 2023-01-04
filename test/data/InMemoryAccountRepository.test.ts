@@ -1,7 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import InMemoryAccountRepository from '../../src/data/repository/InMemoryAccountRepository';
 import Account, { ConnectionLimit, ExpirationDate, Password, Username } from '../../src/domain/entities/Account';
-import AccountNotFoundError from '../../src/domain/errors/AccountNotFoundError';
 
 describe('deve testar o repositorio de contas', () => {
     test('deve criar uma conta', async () => {
@@ -22,13 +21,12 @@ describe('deve testar o repositorio de contas', () => {
         repo.create(account)
 
         const result = await repo.getById(accountId)
+        if (!result) throw new Error('Conta não encontrada')
         expect(result.getUsername().value).toBe('Teste')
     })
 
     test('deve retornar erro ao buscar uma conta inexistente', async () => {
         const repo = new InMemoryAccountRepository();
-        expect(() => {
-            repo.getById(1)
-        }).toThrow(AccountNotFoundError)
+        expect(await repo.getById(1)).toBe(undefined)
     })
 })

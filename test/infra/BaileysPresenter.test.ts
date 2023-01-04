@@ -8,14 +8,14 @@ test('Deve testar o presenter BaileysPresenter', () => {
         username: 'teste',
         password: '123456',
         connection_limit: 2,
-        expiration_date: '2022-10-10'
+        expiration_date: '2022-10-10T00:00:00.000Z'
     }
 
-    let message = '===== [SSH Account] =====\n';
-    message += `Username: ${data.username}\n`;
-    message += `Password: ${data.password}\n`;
-    message += `Max Connection: ${data.connection_limit}\n`;
-    message += `Expires At: ${data.expiration_date}\n`;
+    let message = '====== [Conta SSH] ======\n';
+    message += `Nome de usuario: ${data.username}\n`;
+    message += `Senha: ${data.password}\n`;
+    message += `Conexões máximas: ${data.connection_limit}\n`;
+    message += `Expira em: ${data.expiration_date.split('T')[0]}\n`;
     message += '========================';
 
     const presenter = new BaileysPresenter();

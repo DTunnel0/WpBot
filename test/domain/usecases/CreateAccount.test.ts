@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import Logger from '../../../src/common/Logger';
 
-import InMemorySystemAccountGateway from '../../../src/data/gateway/InMemorySystemAccountGateway';
+import InMemorySystemAccountGateway from '../../../src/data/gateway/local/InMemorySystemAccountGateway';
 import InMemoryAccountRepository from '../../../src/data/repository/InMemoryAccountRepository';
 import CreateAccountUseCase from '../../../src/domain/usecases/CreateAccount';
 import GetAccountByIdUseCase from '../../../src/domain/usecases/GetAccountById';

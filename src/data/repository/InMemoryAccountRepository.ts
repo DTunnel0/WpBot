@@ -1,5 +1,4 @@
 import Account from "../../domain/entities/Account";
-import AccountNotFoundError from "../../domain/errors/AccountNotFoundError";
 import AccountRepository from "../../domain/interfaces/AccountRepository";
 
 export default class InMemoryAccountRepository implements AccountRepository {
@@ -9,9 +8,8 @@ export default class InMemoryAccountRepository implements AccountRepository {
         this.__items.push(account)
     }
 
-    getById(id: number): Promise<Account> {
+    getById(id: number): Promise<Account | undefined> {
         const account = this.__items.find(a => a.getId() == id);
-        if (!account) throw new AccountNotFoundError('Conta nao encontrada')
         return new Promise((resolve) => resolve(account))
     }
 

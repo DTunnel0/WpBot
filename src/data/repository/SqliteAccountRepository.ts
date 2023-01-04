@@ -28,7 +28,7 @@ export default class SqliteAccountRepository implements AccountRepository {
         return promise;
     }
 
-    async getById(id: number): Promise<Account> {
+    async getById(id: number): Promise<Account | undefined> {
         const statement = this.connection.db.prepare(`SELECT * FROM accounts WHERE id = ?`);
         const promise = new Promise<Account>((resolve, reject) => {
             statement.get(id, (err, row) => {

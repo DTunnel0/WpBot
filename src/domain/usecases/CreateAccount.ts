@@ -1,5 +1,6 @@
 import Logger from "../../common/Logger";
 import Account, { ConnectionLimit, ExpirationDate, Password, Username } from "../entities/Account";
+import AccountAlreadyExistsError from "../errors/AccountAlreadyExistsError";
 import AccountGateway from "../interfaces/AccountGateway";
 import AccountRepository from "../interfaces/AccountRepository";
 
@@ -11,16 +12,21 @@ export default class CreateAccountUseCase {
     ) { }
 
     async execute(data: CreateAccountInputDTO): Promise<number> {
+        this.logger.info(`Criando conta: ${data.username}`);
+        if (await this.accountGateway.exists(data.username)) {
+            this.logger.info(`Conta já existe: ${data.username}`);
+            throw new AccountAlreadyExistsError('Já existe uma conta com esse nome de usuário')
+        }
+
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + data.expiration_date);
         let accountId;
 
         try {
-            this.logger.info(`Criando conta: ${data.username}`)
             accountId = await this.accountGateway.create({
                 username: data.username,
                 password: data.password,
-                expirationDate: expirationDate.toISOString()
+                expirationDate: expirationDate.toISOString().split('T')[0]
             });
         } catch (e: any) {
             this.logger.error('Error criar conta no gateway de usuario:', e)

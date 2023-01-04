@@ -4,6 +4,8 @@ export default interface AccountGateway {
     getIdByUsername(username: string): Promise<number>;
 
     delete(username: string): Promise<void>;
+
+    exists(username: string): Promise<boolean>;
 }
 
 export type GatewayAccountInputDTO = {

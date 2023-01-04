@@ -1,4 +1,4 @@
-import AccountGateway, { GatewayAccountInputDTO } from "../../domain/interfaces/AccountGateway";
+import AccountGateway, { GatewayAccountInputDTO } from "../../../domain/interfaces/AccountGateway";
 import LinuxCommandExecutor from "./LinuxCommandExecutor";
 
 export default class SystemAccountGateway implements AccountGateway {
@@ -7,10 +7,10 @@ export default class SystemAccountGateway implements AccountGateway {
     ) { }
 
     async create(account: GatewayAccountInputDTO): Promise<number> {
-        const cmd1 = `useradd -M -s /bin/false -e ${account.expirationDate} -c ${account.username}`;
-        const cmd2 = `echo ${account.username}:${account.password} | chpasswd`;
-
+        const cmd1 = `useradd -M -s /bin/false ${account.username} -e ${account.expirationDate}`;
         await this.commandExecutor.execute(cmd1);
+
+        const cmd2 = `echo ${account.username}:${account.password} | chpasswd`;
         await this.commandExecutor.execute(cmd2);
 
         const cmd3 = `id -u ${account.username}`
@@ -28,5 +28,14 @@ export default class SystemAccountGateway implements AccountGateway {
         const cmd = `userdel --force ${username}`
         await this.commandExecutor.execute(cmd)
         return;
+    }
+
+    async exists(username: string): Promise<boolean> {
+        try {
+            await this.getIdByUsername(username);
+            return Promise.resolve(true);
+        } catch (e: any) {
+            return Promise.resolve(false);
+        }
     }
 }

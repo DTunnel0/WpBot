@@ -1,3 +1,4 @@
+import AccountNotFoundError from "../errors/AccountNotFoundError";
 import AccountGateway from "../interfaces/AccountGateway";
 import AccountRepository from "../interfaces/AccountRepository";
 
@@ -10,6 +11,7 @@ export default class GetAccountByUsername {
     async execute(username: string): Promise<GetAccountByUsernameOutputDTO> {
         const accountId = await this.accountGateway.getIdByUsername(username);
         const account = await this.accountRepository.getById(accountId);
+        if (!account) throw new AccountNotFoundError('Conta não encontrada')
         return {
             username: account.getUsername().value,
             password: account.getPassword().value,
