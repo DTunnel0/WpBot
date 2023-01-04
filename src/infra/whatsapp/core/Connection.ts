@@ -51,9 +51,7 @@ export default class Connection {
     }
 
     private processSendMessage(message: any): AnyMessageContent {
-        if (typeof message === 'string')
-            return { text: message }
-        return message
+        return typeof message === 'string' ? { text: message } : message
     }
 
     async sendMessage(message: any, to: string) {

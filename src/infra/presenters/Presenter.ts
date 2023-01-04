@@ -1,4 +1,3 @@
-import { CreateAccountInputDTO } from "../../domain/usecases/CreateAccount";
 import { GetAccountByUsernameOutputDTO } from "../../domain/usecases/GetAccountByUsername";
 
 export default interface CreateAccountPresenter<T> {
