@@ -47,7 +47,7 @@ export default class Connection {
         const command = this.findCommand(text)
         const args = this.findArgs(text)
         const handler = this.handlers.get(command)
-        this.sendMessage(await handler?.handle(args), message.key.remoteJid!)
+        await this.sendMessage(await handler?.handle(args), message.key.remoteJid!)
     }
 
     private processSendMessage(message: any): AnyMessageContent {
@@ -90,10 +90,16 @@ export default class Connection {
             }
         })
 
-        this.connection?.ev.on('messages.upsert', m => {
-            if (m.messages[0].key.fromMe)
-                return
-            this.handle(m.messages[0])
+        this.connection?.ev.on('messages.upsert', async m => {
+            if (m.messages[0].key.fromMe) return
+            try {
+                await this.handle(m.messages[0])
+            } catch (err) {
+                await this.sendMessage(
+                    '*[Erro] Ocorreu um erro ao processar a mensagem*',
+                    m.messages[0].key.remoteJid!
+                )
+            }
         })
     }
 
